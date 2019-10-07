@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+ul li {
+  list-style-type: none;
+}
+
+.container {
+  margin: 20px auto 0px auto;
+  width: 40%;
+}
+
+.removed {
+  color: gray;
+}
+
+.removed label {
+  text-decoration: line-through;
+}
+    </style>
+    <title>My Shopping List</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>My Shopping List</h2>
+      <div class="input-group">
+        <input class="js-new-item form-control"
+          placeholder="add shopping list item" type="text">
+        <span class="input-group-btn">
+          <button @click="addItem" class="js-add btn btn-default"
+            type="button">Add!</button>
+        </span>
+      </div>
+      <ul>
+        <li>
+          <div class="checkbox">
+            <label>
+              <input class="js-item" name="list" type="checkbox"> Carrot
+            </label>
+          </div>
+        </li>
+        <li>
+          <div class="checkbox">
+            <label>
+              <input class="js-item" name="list" type="checkbox"> Book
+            </label>
+          </div>
+        </li>
+        <li class="removed">
+          <div class="checkbox">
+            <label>
+              <input class="js-item" name="list" type="checkbox" checked>
+                Gift for aunt's birthday
+            </label>
+          </div>
+        </li>
+      </ul>
+
+      <div class="footer">
+        <hr />
+        <em>Change the title of your shopping list here</em>
+        <input class="js-change-title" type="text"
+          value="My Shopping List" />
+      </div>
+    </div>
+    <script>
+$(document).ready(function () {
+  /**
+   * Add a button click handler
+   */
+  function onAdd () {
+    var $ul, li, $li, $label, $div, value
+
+    value = $('.js-new-item').val()
+    // validate against empty values
+    if (value === '') {
+      return;
+    }
+    $ul = $('ul')
+    $li = $('<li>').appendTo($ul)
+    $div = $('<div>')
+      .addClass('checkbox')
+      .appendTo($li)
+    $label = $('<label>').appendTo($div)
+    $('<input>')
+      .attr('type', 'checkbox')
+      .addClass('item')
+      .attr('name', 'list')
+      .click(toggleRemoved)
+      .appendTo($label)
+    $label
+      .append(` ${value}`)
+    $('.js-new-item').val('')
+  }
+
+  /**
+   * Checkbox click handler -
+   * toggles class removed on li parent element
+   * @param ev
+   */
+  function toggleRemoved (ev) {
+    var $el
+
+    $el = $(ev.currentTarget)
+    $el.closest('li').toggleClass('removed')
+  }
+
+  $('.js-add').click(onAdd)
+  $('.js-item').click(toggleRemoved)
+
+  function onChangeTitle () {
+    $('h2').text($('.js-change-title').val())
+  }
+  $('.js-change-title').keyup(onChangeTitle)
+})
+    </script>
+  </body>
+</html>
