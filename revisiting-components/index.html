@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<!--
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <div id="app">
+      <hello-component></hello-component>
+    </div>
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+// creating component
+const HelloComponent = Vue.extend({
+  template: '<h1>Hello</h1>'
+})
+
+// registering component
+Vue.component('hello-component', HelloComponent)
+
+// initialising the Vue application
+new Vue({
+  el: '#app'
+})
+    </script>
+  </body>
+-->
+<!--
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <template id="hello">
+      <h1>Hello</h1>
+    </template>
+
+    <div id="app">
+      <hello-component></hello-component>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+Vue.component('hello-component', {
+  template: '#hello'
+})
+
+new Vue({
+  el: '#app'
+})
+    </script>
+  </body>
+-->
+<!--
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <template id="hello">
+      <h1>{{ msg }}</h1>
+    </template>
+
+    <div id="app">
+      <hello-component></hello-component>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+const HelloComponent = Vue.component('hello-component', {
+  template:  '#hello',
+  data: () => ({ msg: 'Hello' })
+})
+
+new Vue({
+  el: '#app'
+})
+    </script>
+  </body>
+-->
+<!--
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <template id="hello">
+      <h1>{{ msg }} {{ user }}</h1>
+    </template>
+
+    <div id="app">
+      <hello-component v-bind:user="user"></hello-component>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+Vue.component('hello-component', {
+  template:  '#hello',
+  data: () => ({ msg: 'Hello' }),
+  props: ['user']
+})
+
+new Vue({
+  el: '#app',
+  data: {
+    user: 'hero'
+  }
+})
+    </script>
+  </body>
+-->
+<!--
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <template id="form">
+      <div>
+        <label for="name">What's your name?</label>
+        <input id="name" v-model="user" type="text">
+      </div>
+    </template>
+
+    <template id="hello">
+      <h1>{{ msg }} {{ user }}</h1>
+    </template>
+
+    <template id="greetings">
+      <div>
+        <form-component v-bind:user="user"></form-component>
+        <hello-component v-bind:user="user"></hello-component>
+      </div>
+    </template>
+
+    <div id="app">
+      <greetings-component></greetings-component>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+Vue.component('form-component', {
+  template: '#form',
+  props: ['user']
+})
+
+Vue.component('hello-component', {
+  template:  '#hello',
+  data: () => ({ msg: 'Hello' }),
+  props: ['user']
+})
+
+Vue.component('greetings-component', {
+  template: '#greetings',
+  data: () => ({ user: 'hero' })
+})
+
+new Vue({
+  el: '#app'
+})
+    </script>
+  </body>
+-->
+  <head>
+    <title>Standalone</title>
+  </head>
+  <body>
+    <template id="form">
+      <div>
+        <label for="name">What's your name?</label>
+        <input id="name" v-bind:value="value" v-on:input="onInput" type="text">
+      </div>
+    </template>
+
+    <template id="hello">
+      <h1>{{ msg }} {{ user }}</h1>
+    </template>
+
+    <template id="greetings">
+      <div>
+        <form-component v-model="user"></form-component>
+        <hello-component v-bind:user="user"></hello-component>
+      </div>
+    </template>
+
+    <div id="app">
+      <greetings-component></greetings-component>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+Vue.component('form-component', {
+  template: '#form',
+  props: ['value'],
+  methods: {
+    onInput: function ({ target: { value } }) {
+      this.$emit('input', value)
+    }
+  }
+})
+
+Vue.component('hello-component', {
+  template:  '#hello',
+  data: () => ({ msg: 'Hello' }),
+  props: ['user']
+})
+
+Vue.component('greetings-component', {
+  template: '#greetings',
+  data: () => ({ user: 'hero' })
+})
+
+new Vue({
+  el: '#app'
+})
+    </script>
+  </body>
+</html>
